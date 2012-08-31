@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>Koi.js</title>
+    <!--script type="text/javascript" src="handlebars.min.js"></script-->
+    <script type="text/javascript" src="Koi.js"></script>
+    <script type="text/javascript">
+
+        Koi.application({
+            name:'testApp',
+            imports:['Koi.Class', 'Koi.ui.Viewport', 'Koi.ui.Canvas', 'Koi.Rectangle', 'Koi.Sprite', 'Koi.AnimatedSprite'],
+
+            main:function () {
+                var viewport = Koi.instantiate('Koi.ui.Viewport', {
+                            title:'Koi test App',
+
+                            items:[
+                                {type:'canvas', width:500, height:500}
+                            ]
+                        }),
+                        scene = Koi.instantiate('Koi.Scene', {
+                            entities:[
+                                {
+                                    type:'animatedsprite',
+                                    src:'/img/gb_walk.png',
+                                    x:10,
+                                    y:20,
+                                    sliceWidth:104,
+                                    sliceHeight:149,
+                                    animationSpeed:10, //15
+                                    numberOfAnimationSteps:6
+
+                                }
+
+                            ]
+                        }),
+                        context = viewport.items[0].getContext(),
+                        requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+
+                render = function () {
+                    requestAnimationFrame(render);
+                    scene.entities[0].x = (scene.entities[0].x + 50 / 60);
+                    if (scene.entities[0].x > 500) {
+                        scene.entities[0].x = -104;
+                    }
+                    scene.render(context);
+                }
+                scene.canvas = viewport.items[0].canvas;
+                requestAnimationFrame(render);
+
+
+            }
+        });
+
+    </script>
+</head>
+<body></body>
+
+
+</html>
