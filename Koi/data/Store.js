@@ -5,6 +5,7 @@ Koi.define('Koi.data.Store', {
 
     endpoint:undefined,
 
+
     /**
      * if true the store loads on initialization
      */
