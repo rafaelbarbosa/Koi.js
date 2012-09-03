@@ -1,6 +1,13 @@
 var Koi = {
 
+    EventBus:{
+
+        listeners:{}
+
+    },
+
     ClassManager:{
+        id:0,
         classes:{},
         alias:{},
 
@@ -122,11 +129,13 @@ var Koi = {
     instantiate:function (className) {
         var me = this,
             classManager = me.ClassManager,
+            classDefinition = {},
             inst = {};
         //Validate if classname requested is an alias, if it is return the aliased class    
         if (className.indexOf("\.") === -1 && Koi.isDefined(classManager.alias[className])) {
             className = classManager.alias[className];
         }
+        classDefinition = classManager.get(className);
         me.apply(classManager.get(className), inst)
         if (me.isDefined(arguments[1])) {
             me.apply(arguments[1], inst);
@@ -134,6 +143,8 @@ var Koi = {
         if (me.isDefined(inst.constructor) && me.isFunction(inst.constructor)) {
             inst.constructor.call(inst);
         }
+        inst['id'] = 'obj-' + me.ClassManager.id;
+        me.ClassManager.id++;
         return inst;
     },
 

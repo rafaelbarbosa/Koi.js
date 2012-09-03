@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Koi.js</title>
+    <!--script type="text/javascript" src="handlebars.min.js"></script-->
+    <script type="text/javascript" src="Koi.js"></script>
+    <script type="text/javascript">
+
+        Koi.application({
+            name:'testApp',
+            imports:['Koi.Class', 'Koi.ui.Viewport', 'Koi.ui.Button'],
+
+            main:function () {
+                var viewport = Koi.instantiate('Koi.ui.Viewport', {
+                            title:'Koi test App',
+                            items:[
+                                {type:'button', text:'botao de teste'},
+                                {type:'button', text:'botao de teste2'}
+                            ]
+                        }),
+
+                        button = viewport.items[0],
+                        button2 = viewport.items[1];
+
+                button.on('click', function () {
+                    alert();
+                }, button, true);
+                button2.on('click', function () {
+                    alert('buttons2');
+                }, button2, false);
+            }
+        });
+
+    </script>
+</head>
+<body></body>
+
+
+</html>

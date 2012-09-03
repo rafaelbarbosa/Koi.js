@@ -6,11 +6,21 @@ Koi.define('Koi.ui.Viewport', {
     title:'',
 
     constructor:function (config) {
-        var me = this;
+        var me = this,
+            headEl,
+            bootstrapStylesheet;
 
 
         me.el = window.document.getElementsByTagName('body')[0];
 
+        headEl = window.document.getElementsByTagName('head')[0];
+
+        bootstrapStylesheet = document.createElement('link');
+
+        bootstrapStylesheet.setAttribute('rel', 'stylesheet');
+        bootstrapStylesheet.setAttribute('href', 'css/bootstrap.min.css');
+
+        headEl.appendChild(bootstrapStylesheet);
 
         me.el.setAttribute('class', 'koi-body');
 

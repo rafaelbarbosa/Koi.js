@@ -1,5 +1,8 @@
 Koi.define('Koi.data.Endpoint', {
 
+
+
+
     get:function (id) {
     },
 

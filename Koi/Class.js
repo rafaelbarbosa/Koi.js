@@ -1,7 +1,7 @@
 Koi.define('Koi.Class', {
 
     events:[],
-    listeners:{},
+
 
     callParent:function (args) {
         var caller = arguments.callee.caller.$name;
@@ -13,10 +13,13 @@ Koi.define('Koi.Class', {
 
     on:function (event, fn, scope, single) {
         var me = this;
-        if (!me.listeners.hasOwnProperty(event)) {
-            me.listeners[event] = [];
+        if (!Koi.EventBus.listeners.hasOwnProperty(me.id)) {
+            Koi.EventBus.listeners[me.id] = {};
         }
-        me.listeners[event].push({
+        if (!Koi.EventBus.listeners[me.id].hasOwnProperty(event)) {
+            Koi.EventBus.listeners[me.id][event] = new Array();
+        }
+        Koi.EventBus.listeners[me.id][event].push({
             "fn":fn,
             "scope":scope,
             "single":single
@@ -25,12 +28,12 @@ Koi.define('Koi.Class', {
 
     fire:function () {
         var me = this,
-            listeners = me.listeners,
+            listeners = Koi.EventBus.listeners,
             eventName = arguments[0],
             args = Koi.slice(arguments, 1);
 
-        if (listeners.hasOwnProperty(eventName)) {
-            Koi.each(listeners[eventName], function (index, listener, allListeners) {
+        if (listeners.hasOwnProperty(me.id) && listeners[me.id].hasOwnProperty(eventName)) {
+            Koi.each(listeners[me.id][eventName], function (index, listener, allListeners) {
                 listener.fn.apply(listener.scope, args);
             });
         }
