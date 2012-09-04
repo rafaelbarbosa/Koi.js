@@ -1,4 +1,5 @@
 Koi.define('Koi.data.Store', {
+
     model:undefined,
 
     primaryKey:undefined,
@@ -19,6 +20,14 @@ Koi.define('Koi.data.Store', {
         if (me.endpoint === undefined) {
             throw Koi.Exception('endpoint must be defined');
         }
+
+        var endpointInstance = Koi.instantiate(me.endpoint.type, me.endpoint);
+
+        delete me.endpoint;
+        me.endpoint = endpointInstance;
+
+        me.endpoint.on('get', me.loadRaw, me, false);
+
         if (me.autoLoad) {
             me.load();
         }
@@ -72,7 +81,32 @@ Koi.define('Koi.data.Store', {
     },
 
     load:function (callback) {
+        var me = this,
+            endpoint = me.endpoint;
+        endpoint.doGet(callback);
+    },
 
+    loadRaw:function (rawData) {
+        var me = this;
+        Koi.each(rawData, function (index, data, allData) {
+            me.add(data);
+        });
+    },
+
+    add:function (data) {
+        var me = this,
+            recordInst;
+        debugger;
+        recordInst = Koi.instantiate(me.model, {});
+
+
+        Koi.each(data, function (key, value, allValues) {
+            debugger;
+            recordInst.set(key, value);
+        });
+
+        me.records.push(recordInst);
     }
+
 
 });

@@ -24,6 +24,7 @@ Koi.define('Koi.ui.Viewport', {
 
         me.el.setAttribute('class', 'koi-body');
 
+        me.setTitle(me.title);
 
         this.callParent(arguments);
 

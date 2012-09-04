@@ -15,34 +15,58 @@ Koi.define('Koi.data.endpoint.Rest', {
 
     constructor:function () {
         var me = this;
-
         me.connection = Koi.instantiate('Koi.Connection');
+        me.callParent();
     },
 
-    get:function (id) {
+    doGet:function () {
+        var me = this,
+            id = undefined,
+            callback = undefined,
+            uri = me.url;
+
+        if (arguments.length > 0 && Koi.isFunction(arguments[0])) {
+            callback = arguments[0];
+        }
+        if (arguments.length > 1 && !Koi.isFunction(arguments[1])) {
+            callback = arguments[1];
+        }
+
+        if (arguments.length > 0 && !Koi.isFunction(arguments[0])) {
+            id = arguments[0];
+        }
+
+
+        if (id) {
+            uri = uri + '/' + id;
+        }
+        me.fire('beforeget');
+        me.connection.send(uri, 'GET', null, function (status, response) {
+            me.fire('get', me.reader.read(response));
+        }, me);
+
+
+    },
+
+    doPost:function (data) {
         var me = this,
             uri = me.url;
 
         if (id) {
             uri = uri + '/' + id;
         }
-        me.connection.send(uri, 'GET', null, function (status, response) {
-            if (me.fire(me.reader.read(response))) {
-                //TODO:FINISH THIS MOTHERFUCKER
-            }
+        me.fire('beforepost');
+        me.connection.send(uri, 'POST', null, function (status, response) {
+            me.fire('post', me.reader.read(response));
         }, me);
 
     },
 
-    post:function () {
+    doPut:function (id, data) {
 
     },
 
-    put:function (id) {
-
-    },
-
-    delete:function (id) {
+    doDelete:function (id) {
 
     }
 

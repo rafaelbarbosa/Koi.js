@@ -16,14 +16,20 @@ Koi.define('Koi.ui.Button', {
     constructor:function () {
         var me = this;
 
+        me.el = document.createElement('a');
+
+        me.el.onclick = function (mouseEvent) {
+            me.fire('click');
+        }
+        me.el.ondblclick = function (mouseEvent) {
+            me.fire('dblclick');
+        }
+
     },
 
     render:function (parentEl) {
         var me = this,
             btnClass = 'btn';
-
-        me.el = document.createElement('a');
-
 
         if (Koi.isDefined(me.style)) {
             btnClass = btnClass + ' btn-' + me.style;
@@ -41,12 +47,6 @@ Koi.define('Koi.ui.Button', {
         me.el.className = btnClass;
         me.el.href = 'javascript:void(0)';
         me.el.innerHTML = me.text;
-
-        me.el.onclick = function (mouseEvent) {
-            me.fire('click');
-        }
-
-
         parentEl.appendChild(me.el);
 
     }

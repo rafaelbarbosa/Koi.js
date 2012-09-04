@@ -1,18 +1,29 @@
 Koi.define('Koi.data.Endpoint', {
 
+    reader:undefined,
 
 
+    constructor:function () {
+        var me = this;
 
-    get:function (id) {
+        if (Koi.isDefined(me.reader) && Koi.isString(me.reader)) {
+            var readerInstance = Koi.instantiate(me.reader);
+            delete me.reader;
+            me.reader = readerInstance;
+        }
     },
 
-    post:function () {
+
+    doGet:function () {
     },
 
-    put:function (id) {
+    doPost:function () {
     },
 
-    delete:function (id) {
+    doPut:function (id) {
+    },
+
+    doDelete:function (id) {
     }
 
 

@@ -7,7 +7,16 @@
 
         Koi.application({
             name:'testApp',
-            imports:['Koi.Class', 'Koi.ui.Viewport', 'Koi.ui.Button'],
+            imports:[
+                'Koi.Class',
+                'Koi.ui.Viewport',
+                'Koi.ui.Button',
+                'examples.data.model.User',
+                'examples.data.store.User',
+                'Koi.data.endpoint.Rest',
+                'Koi.data.reader.Json'
+
+            ],
 
             main:function () {
                 var viewport = Koi.instantiate('Koi.ui.Viewport', {
@@ -21,10 +30,10 @@
                         button2 = viewport.items[1];
 
                 button.on('click', function () {
-                    alert();
+
                 }, button, true);
                 button2.on('dblclick', function () {
-                    alert('buttons2');
+
                 }, button2, false);
             }
         });

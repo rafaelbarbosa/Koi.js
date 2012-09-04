@@ -3,7 +3,7 @@ Koi.define('Koi.data.reader.Json', {
     alias:'json',
 
     read:function (value) {
-        debugger;
+        return JSON.parse(value);
     }
 
 });

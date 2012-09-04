@@ -30,7 +30,12 @@ Koi.define('Koi.Class', {
         var me = this,
             listeners = Koi.EventBus.listeners,
             eventName = arguments[0],
-            args = Koi.slice(arguments, 1);
+            args = new Array();
+
+        Koi.each(arguments, function (index, argument, allArguments) {
+            args.push(argument);
+        });
+        args.shift();
 
         if (listeners.hasOwnProperty(me.id) && listeners[me.id].hasOwnProperty(eventName)) {
             Koi.each(listeners[me.id][eventName], function (index, listener, allListeners) {
