@@ -1,10 +1,13 @@
 var Koi = {
+    debug:false,
 
     EventBus:{
 
         listeners:{}
 
     },
+
+    ObjectManager:{},
 
     ClassManager:{
         id:0,
@@ -46,7 +49,9 @@ var Koi = {
 
         add:function (clazz, definition) {
             var me = this;
-            console.log('Adding class ' + clazz);
+            if (me.debug) {
+                console.log('Adding class ' + clazz);
+            }
 
             /*if(Koi.isDefined(definition['extends'])){
              console.log('Extends ' + definition['extends'])
@@ -67,6 +72,8 @@ var Koi = {
                 this.alias[definition['alias']] = clazz;
             }
             this.classes[clazz] = definition;
+
+
         },
         get:function (clazz, callback) {
             if (!Koi.isDefined(this.classes[clazz])) {
@@ -95,8 +102,6 @@ var Koi = {
             me.each(definition.imports, function (index, item, all) {
                 me.ClassManager.include(item);
             }, me);
-
-
         }
         window[definition.name] = {name:definition.name};
 
@@ -130,21 +135,24 @@ var Koi = {
         var me = this,
             classManager = me.ClassManager,
             classDefinition = {},
-            inst = {};
+            inst = new Object();
         //Validate if classname requested is an alias, if it is return the aliased class    
         if (className.indexOf("\.") === -1 && Koi.isDefined(classManager.alias[className])) {
             className = classManager.alias[className];
         }
         classDefinition = classManager.get(className);
-        me.apply(classManager.get(className), inst)
+        me.apply(classDefinition, inst)
         if (me.isDefined(arguments[1])) {
             me.apply(arguments[1], inst);
         }
-        if (me.isDefined(inst.constructor) && me.isFunction(inst.constructor)) {
+        inst['id'] = className + '-' + me.ClassManager.id;
+        me.ClassManager.id++;
+
+        if (inst.hasOwnProperty('constructor')) {
             inst.constructor.call(inst);
         }
-        inst['id'] = 'obj-' + me.ClassManager.id;
-        me.ClassManager.id++;
+
+        me.ObjectManager[inst.id] = inst;
         return inst;
     },
 
@@ -192,7 +200,18 @@ var Koi = {
      */
     apply:function (obj, config) {
         for (var key in obj) {
-            config[key] = obj[key];
+            if (key === 'prototype' || key === '__proto__') {
+                continue;
+            }
+            var prop = obj[key];
+            if ((typeof(prop) === 'object' || prop instanceof Array) && !(prop instanceof HTMLElement) && prop !== 'undefined' && !(prop instanceof XMLHttpRequest)) {
+                config[key] = new Object();
+                this.apply(prop, config[key]);
+            }
+            else {
+                config[key] = prop;
+            }
+
             if (Koi.isFunction(config[key])) {
                 config[key].$name = key;
             }
@@ -207,7 +226,14 @@ var Koi = {
     applyIf:function (obj, config) {
         for (var key in obj) {
             if (!Koi.isDefined(config[key])) {
-                config[key] = obj[key];
+                var prop = obj[key];
+                if (typeof(prop) === 'object') {
+                    config[key] = new Object();
+                    this.apply(prop, config[key]);
+                }
+                else {
+                    config[key] = prop;
+                }
                 if (Koi.isFunction(config[key])) {
                     config[key].$name = key;
                 }
@@ -288,5 +314,6 @@ var Koi = {
     emptyFn:function () {
     }
 
+};
 
-}
+

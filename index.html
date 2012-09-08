@@ -7,12 +7,11 @@
 
         Koi.application({
             name:'testApp',
-            imports:['Koi.Class', 'Koi.ui.Viewport', 'Koi.ui.Canvas', 'Koi.Rectangle', 'Koi.Sprite', 'Koi.AnimatedSprite', 'Koi.ui.Button'],
+            imports:['Koi.ui.Canvas', 'Koi.Rectangle', 'Koi.AnimatedSprite', 'Koi.ui.Button'],
 
             main:function () {
                 var viewport = Koi.instantiate('Koi.ui.Viewport', {
                             title:'Koi test App',
-
                             items:[
                                 {type:'canvas', width:500, height:500},
                                 {type:'button', text:'botao de teste', style:'primary', size:'large'}
@@ -48,7 +47,6 @@
                 }
                 scene.canvas = viewport.items[0].canvas;
                 requestAnimationFrame(render);
-
 
             }
         });

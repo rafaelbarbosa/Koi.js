@@ -2,6 +2,7 @@ Koi.define('Koi.Sprite', {
     extends:'Koi.Entity',
     alias:'sprite',
 
+    imports:['Koi.Sprite'],
 
     src:undefined,
     image:undefined,

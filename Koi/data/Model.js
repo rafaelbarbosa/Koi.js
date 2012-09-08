@@ -12,6 +12,7 @@ Koi.define('Koi.data.Model', {
                 me.set(fieldName, field['default']);
             }
         });
+
     },
 
     /**
@@ -26,7 +27,7 @@ Koi.define('Koi.data.Model', {
                 value = me.fields[field]['converter'].call(me, value);
             }
             me.data[field] = value;
-            me.fire('updated', field, value);
+            me.fire('updated', field, value, me);
         }
         else {
             throw Koi.Exception('Unrecognized field');

@@ -8,14 +8,12 @@
         Koi.application({
             name:'testApp',
             imports:[
-                'Koi.Class',
-                'Koi.ui.Viewport',
                 'Koi.ui.Button',
+                'Koi.ui.Grid',
                 'examples.data.model.User',
                 'examples.data.store.User',
                 'Koi.data.endpoint.Rest',
                 'Koi.data.reader.Json'
-
             ],
 
             main:function () {
@@ -23,18 +21,38 @@
                             title:'Koi test App',
                             items:[
                                 {type:'button', text:'botao de teste'},
-                                {type:'button', text:'botao de teste2'}
+                                {type:'button', text:'botao de teste2'},
+                                {
+                                    type:'grid',
+                                    store:'examples.data.store.User',
+                                    columns:[
+                                        {
+                                            header:'Name',
+                                            mapping:'name'
+                                        },
+                                        {
+                                            header:'Username',
+                                            mapping:'username'
+                                        }
+                                    ]
+                                }
                             ]
                         }),
                         button = viewport.items[0],
-                        button2 = viewport.items[1];
+                        button2 = viewport.items[1],
+                        grid = viewport.items[2];
+
 
                 button.on('click', function () {
-
+                    grid.store.removeAll();
+                    grid.store.load();
                 }, button, true);
                 button2.on('dblclick', function () {
-
+                    grid.store.removeAll();
                 }, button2, false);
+                grid.on('itemclick', function (record) {
+                    alert(record.get('name'));
+                })
             }
         });
 

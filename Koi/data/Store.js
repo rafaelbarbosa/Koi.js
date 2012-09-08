@@ -6,35 +6,37 @@ Koi.define('Koi.data.Store', {
 
     endpoint:undefined,
 
+    records:undefined,
+
 
     /**
      * if true the store loads on initialization
      */
     autoLoad:false,
 
-    constructor:function () {
-        var me = this;
-        if (me.model === undefined) {
+    constructor:function (config) {
+
+        if (this.model === undefined) {
             throw Koi.Exception('endpoint must be defined');
         }
-        if (me.endpoint === undefined) {
+        if (this.endpoint === undefined) {
             throw Koi.Exception('endpoint must be defined');
         }
 
-        var endpointInstance = Koi.instantiate(me.endpoint.type, me.endpoint);
+        var endpointInstance = Koi.instantiate(this.endpoint.type, this.endpoint);
 
-        delete me.endpoint;
-        me.endpoint = endpointInstance;
+        delete this.endpoint;
+        this.endpoint = endpointInstance;
 
-        me.endpoint.on('get', me.loadRaw, me, false);
+        this.endpoint.on('get', this.loadRaw, this, false);
 
-        if (me.autoLoad) {
-            me.load();
+        if (this.autoLoad) {
+            this.load();
         }
+
+
     },
 
-
-    records:[],
 
     /**
      * returns the index of the first found record or -1 if it doesnt find any record
@@ -84,6 +86,7 @@ Koi.define('Koi.data.Store', {
         var me = this,
             endpoint = me.endpoint;
         endpoint.doGet(callback);
+
     },
 
     loadRaw:function (rawData) {
@@ -91,21 +94,41 @@ Koi.define('Koi.data.Store', {
         Koi.each(rawData, function (index, data, allData) {
             me.add(data);
         });
+        me.fire('load', me.records);
     },
 
     add:function (data) {
         var me = this,
             recordInst;
-        debugger;
         recordInst = Koi.instantiate(me.model, {});
-
-
         Koi.each(data, function (key, value, allValues) {
-            debugger;
             recordInst.set(key, value);
         });
-
+        if (!Koi.isDefined(me.records)) {
+            me.records = new Array();
+        }
         me.records.push(recordInst);
+    },
+    remove:function (record) {
+        record.fire('removed');
+        delete this.records[record];
+    },
+    removeAt:function (index) {
+        var record = this.records[index];
+        record.fire('removed');
+        delete this.records[index];
+
+    },
+    removeAll:function () {
+        if (Koi.isDefined(this.records)) {
+            Koi.each(this.records, function (index, record, allRecords) {
+                record.fire('removed');
+                record.destroy();
+                allRecords[index] = undefined;
+            });
+            this.records = new Array();
+        }
+
     }
 
 

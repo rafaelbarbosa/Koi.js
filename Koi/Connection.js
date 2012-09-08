@@ -2,7 +2,7 @@ Koi.define('Koi.Connection', {
 
     req:undefined,
 
-    constructor:function () {
+    constructor:function (args) {
         var me = this;
         if (window.XMLHttpRequest) {
             me.req = new XMLHttpRequest();
@@ -10,11 +10,11 @@ Koi.define('Koi.Connection', {
         else {
             me.req = new ActiveXObject("Microsoft.XMLHTTP");
         }
+        this.callParent(args);
     },
 
     send:function (url, method, data, callback, scope) {
         var me = this;
-
         me.req.open(method, url, false);
         me.req.onreadystatechange = function () {
 
