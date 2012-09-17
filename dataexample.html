@@ -4,7 +4,7 @@
     <!--script type="text/javascript" src="handlebars.min.js"></script-->
     <script type="text/javascript" src="Koi.js"></script>
     <script type="text/javascript">
-
+        Koi.debug=true;
         Koi.application({
             name:'testApp',
             imports:[
@@ -12,47 +12,46 @@
                 'Koi.ui.Grid',
                 'examples.data.model.User',
                 'examples.data.store.User',
+                'examples.data.controller.Main',
                 'Koi.data.endpoint.Rest',
                 'Koi.data.reader.Json'
             ],
 
+            controllers:['examples.data.controller.Main'],
+
+            viewport:{
+                title:'Koi test App',
+                items:[
+                    {type:'button', itemId:'button1', text:'botao de teste'},
+                    {type:'button', itemId:'button2', text:'botao de teste2'},
+                    {
+                        type:'grid',
+                        store:'examples.data.store.User',
+                        columns:[
+                            {
+                                header:'Name',
+                                mapping:'name'
+                            },
+                            {
+                                header:'Username',
+                                mapping:'username'
+                            }
+                        ]
+                    },
+                    {
+                        type:'container',
+                        items:[
+                            {type:'button', itemId:'button3', action:'button3'}
+                        ]
+                    }
+                ]
+
+
+            },
+
             main:function () {
-                var viewport = Koi.instantiate('Koi.ui.Viewport', {
-                            title:'Koi test App',
-                            items:[
-                                {type:'button', text:'botao de teste'},
-                                {type:'button', text:'botao de teste2'},
-                                {
-                                    type:'grid',
-                                    store:'examples.data.store.User',
-                                    columns:[
-                                        {
-                                            header:'Name',
-                                            mapping:'name'
-                                        },
-                                        {
-                                            header:'Username',
-                                            mapping:'username'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }),
-                        button = viewport.items[0],
-                        button2 = viewport.items[1],
-                        grid = viewport.items[2];
 
 
-                button.on('click', function () {
-                    grid.store.removeAll();
-                    grid.store.load();
-                }, button, true);
-                button2.on('dblclick', function () {
-                    grid.store.removeAll();
-                }, button2, false);
-                grid.on('itemclick', function (record) {
-                    alert(record.get('name'));
-                })
             }
         });
 

@@ -10,7 +10,7 @@ Koi.define('examples.data.store.User', {
     },
 
 
-    constructor:function () {
+    init:function () {
         this.callParent();
     }
 

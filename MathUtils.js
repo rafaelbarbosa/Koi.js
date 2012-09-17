@@ -1,7 +1,7 @@
 Koi.define('MathUtils', {
     extends:'local.NumberFormatter',
 
-    constructor:function (cool) {
+    init:function (cool) {
         console.log(cool);
     },
 

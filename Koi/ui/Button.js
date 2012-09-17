@@ -13,7 +13,7 @@ Koi.define('Koi.ui.Button', {
     block:false,
 
 
-    constructor:function () {
+    init:function () {
         var me = this;
 
         me.el = document.createElement('a');

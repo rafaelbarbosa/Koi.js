@@ -2,7 +2,7 @@ Koi.define('Koi.Connection', {
 
     req:undefined,
 
-    constructor:function (args) {
+    init:function (args) {
         var me = this;
         if (window.XMLHttpRequest) {
             me.req = new XMLHttpRequest();

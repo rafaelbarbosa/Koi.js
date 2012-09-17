@@ -4,7 +4,7 @@ Koi.define('Koi.data.Model', {
 
     fields:{},
 
-    constructor:function () {
+    init:function () {
         var me = this;
         Koi.each(me.fields, function (fieldName, field, allFields) {
             me.data[fieldName] = undefined;

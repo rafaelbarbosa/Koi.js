@@ -3,7 +3,7 @@ Koi.define('Koi.data.Endpoint', {
     reader:undefined,
 
 
-    constructor:function () {
+    init:function () {
         var me = this;
 
         if (Koi.isDefined(me.reader) && Koi.isString(me.reader)) {

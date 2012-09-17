@@ -6,7 +6,7 @@ Koi.define('examples.data.model.User', {
         name:{}
     },
 
-    constructor:function () {
+    init:function () {
         this.callParent();
     }
 });

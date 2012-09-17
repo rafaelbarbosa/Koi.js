@@ -5,7 +5,7 @@ Koi.define('Koi.Scene', {
     canvas:undefined,
 
 
-    constructor:function (config) {
+    init:function (config) {
         var me = this;
         entityObjs = []
 

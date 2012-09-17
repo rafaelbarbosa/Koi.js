@@ -14,7 +14,7 @@ Koi.define('Koi.data.Store', {
      */
     autoLoad:false,
 
-    constructor:function (config) {
+    init:function (config) {
 
         if (this.model === undefined) {
             throw Koi.Exception('endpoint must be defined');
@@ -108,6 +108,7 @@ Koi.define('Koi.data.Store', {
             me.records = new Array();
         }
         me.records.push(recordInst);
+        me.fire('added', recordInst);
     },
     remove:function (record) {
         record.fire('removed');
@@ -116,7 +117,7 @@ Koi.define('Koi.data.Store', {
     removeAt:function (index) {
         var record = this.records[index];
         record.fire('removed');
-        delete this.records[index];
+        this.records.splice(index, 2);
 
     },
     removeAll:function () {
@@ -124,7 +125,7 @@ Koi.define('Koi.data.Store', {
             Koi.each(this.records, function (index, record, allRecords) {
                 record.fire('removed');
                 record.destroy();
-                allRecords[index] = undefined;
+                delete allRecords[index];
             });
             this.records = new Array();
         }

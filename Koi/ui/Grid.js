@@ -8,9 +8,11 @@ Koi.define('Koi.ui.Grid', {
 
     store:undefined,
 
+    gridType:'condensed',
+
     columns:[],
 
-    constructor:function (config) {
+    init:function (config) {
 
         var me = this;
 
@@ -21,7 +23,7 @@ Koi.define('Koi.ui.Grid', {
         me.store.on('load', me.renderItems, this, false);
 
         me.el = document.createElement('table');
-        me.el.className = 'table';
+        me.el.className = 'table table-'+ me.gridType;
 
     },
 

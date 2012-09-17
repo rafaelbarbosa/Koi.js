@@ -7,7 +7,7 @@ Koi.define('Koi.Sprite', {
     src:undefined,
     image:undefined,
 
-    constructor:function (config) {
+    init:function (config) {
         var me = this;
         if (Koi.isDefined(config.src) && Koi.isString(config.src)) {
             me.image = new Image();

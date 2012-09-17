@@ -39,7 +39,6 @@ var Koi = {
             req.open("GET", filename, false);
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
-
                     window.eval(req.responseText);
                 }
             }
@@ -106,6 +105,23 @@ var Koi = {
         window[definition.name] = {name:definition.name};
 
         window.onload = function () {
+
+            if(definition.hasOwnProperty('viewport')){
+                var viewportInst = Koi.instantiate('Koi.ui.Viewport',definition.viewport);
+                delete definition.viewport;
+                definition.viewport = viewportInst;
+            }
+            if (definition.hasOwnProperty('controllers')) {
+                var instControllers = new Array();
+                Koi.each(definition.controllers, function (index, controller, allControllers) {
+                    var instController = Koi.instantiate(controller, {'viewport':definition.viewport});
+                    instController.controller.call(instController);
+                    instControllers.push(instController);
+                });
+                delete definition.controllers;
+                definition.controllers = instControllers;
+            }
+
             definition.main.call(definition);
         }
 
@@ -120,12 +136,17 @@ var Koi = {
         if (!me.isObject(definition)) {
             throw Koi.Exception('definition must be an Object');
         }
+
         if (!me.isDefined(definition.extends) && className != 'Koi.Class') {
             definition.extends = 'Koi.Class';
         }
         if (me.isDefined(definition.extends)) {
             definition.$superclass = me.ClassManager.get(definition.extends);
             me.applyIf(me.ClassManager.get(definition.extends), definition);
+        }
+
+        if(!me.isDefined(definition['init'])){
+            definition['init'] = function(config){this.$superclass.init.call(this)};
         }
         me.ClassManager.add(className, definition);
     },
@@ -147,10 +168,7 @@ var Koi = {
         }
         inst['id'] = className + '-' + me.ClassManager.id;
         me.ClassManager.id++;
-
-        if (inst.hasOwnProperty('constructor')) {
-            inst.constructor.call(inst);
-        }
+        inst.init.call(inst);
 
         me.ObjectManager[inst.id] = inst;
         return inst;

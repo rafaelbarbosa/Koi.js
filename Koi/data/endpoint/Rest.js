@@ -13,7 +13,7 @@ Koi.define('Koi.data.endpoint.Rest', {
 
     connection:undefined,
 
-    constructor:function () {
+    init:function () {
         var me = this;
         me.connection = Koi.instantiate('Koi.Connection', {});
         me.callParent();

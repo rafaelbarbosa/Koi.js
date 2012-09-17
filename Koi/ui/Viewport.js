@@ -5,7 +5,7 @@ Koi.define('Koi.ui.Viewport', {
 
     title:'',
 
-    constructor:function (config) {
+    init:function (config) {
         var me = this,
             headEl,
             bootstrapStylesheet;
@@ -29,6 +29,7 @@ Koi.define('Koi.ui.Viewport', {
         this.callParent(arguments);
 
         this.render(me.el);
+
     },
     setTitle:function (title) {
         window.document.title = title;

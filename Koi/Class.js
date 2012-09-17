@@ -2,7 +2,7 @@ Koi.define('Koi.Class', {
 
     events:[],
 
-    constructor:function (config) {
+    init:function (config) {
         if (Koi.isDefined(this.imports)) {
             Koi.each(this.imports, function (index, item, all) {
                 Koi.ClassManager.include(item);
